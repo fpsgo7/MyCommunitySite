@@ -20,8 +20,9 @@ public class Member {
     private String password;
     private String roles;
 
-    private AdministratorPage administratorPage;
+    @OneToMany(mappedBy = "member")
     private List<FreeBoardPost> freeBoardPosts;
+    @OneToMany(mappedBy = "member")
     private List<FreeBoardComment> freeBoardComments;
 
     /*--핵심 비즈니스 로직--*/
