@@ -24,9 +24,9 @@ public class FreeBoardPost extends BaseTimeEntity{
 
     private int recommend;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @OneToMany(mappedBy = "freeBoardPost")
+    @OneToMany(mappedBy = "freeBoardPost" ,cascade = CascadeType.ALL)
     private List<FreeBoardComment> freeBoardComments;
 }

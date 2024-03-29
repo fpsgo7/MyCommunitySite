@@ -18,19 +18,19 @@ public class FreeBoardComment extends BaseTimeEntity{
     private String content;
     private int reported;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "free_board_post_id")
     private FreeBoardPost freeBoardPost;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private FreeBoardComment parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<FreeBoardComment> children= new ArrayList<>();
-    
+
 }

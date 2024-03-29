@@ -20,9 +20,9 @@ public class Member {
     private String password;
     private String roles;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<FreeBoardPost> freeBoardPosts;
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<FreeBoardComment> freeBoardComments;
 
     /*--핵심 비즈니스 로직--*/
