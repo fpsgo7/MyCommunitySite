@@ -30,6 +30,10 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	implementation group: 'com.auth0', name: 'java-jwt', version: '3.19.4'
+
+	compileOnly 'org.springframework.boot:spring-boot-devtools'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
