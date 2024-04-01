@@ -1,13 +1,16 @@
 package park.mycommunitysite.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "free_board_comment")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FreeBoardComment extends BaseTimeEntity{
 
     @Id

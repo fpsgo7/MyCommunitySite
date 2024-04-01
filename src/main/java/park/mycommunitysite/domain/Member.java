@@ -1,7 +1,9 @@
 package park.mycommunitysite.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,10 +11,11 @@ import java.util.List;
 
 @Entity(name = "members")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자 protected로 하여 함부로 객체생성을 못하게함
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue// (strategy = GenerationType.AUTO)<- 기본값이며 자동 증가를 지원한다.
     @Column(name = "member_id")
     private Long id;
 
@@ -24,6 +27,13 @@ public class Member {
     private List<FreeBoardPost> freeBoardPosts;
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<FreeBoardComment> freeBoardComments;
+
+    public  Member(Member member,String encryptedPassword){
+        this.id = member.getId();
+        this.email = member.getEmail();
+        this.password = encryptedPassword;
+        this.roles = "USER";
+    }
 
     /*--핵심 비즈니스 로직--*/
 
