@@ -12,6 +12,7 @@ spring:
         # show_sql: true
         format_sql: true
 
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
+# build.gradle 의 p6spy 로 대체하였다.
+#logging.level:
+#  org.hibernate.SQL: debug
+#  org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
