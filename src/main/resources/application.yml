@@ -5,12 +5,19 @@ spring:
     password: 1234
     driver-class-name: org.h2.Driver
   jpa:
+    # Hibernate 초기화 후 프로젝트의 sql문이 실행된다. (예  memberData.sql)
+    defer-datasource-initialization : true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
         # show_sql: true
         format_sql: true
+  sql:
+    init:
+      mode: always
+      #continue-on-error : true # 서버시작시 sql문을 실행할 때 오류 무시하고 진행
+      data-locations: classpath:sql/memberData.sql # 해당 sql문을 실행한다.
 
 # build.gradle 의 p6spy 로 대체하였다.
 #logging.level:
