@@ -15,6 +15,10 @@ public class CustomUserDetails implements UserDetails {
         this.member = member;
     }
 
+    public Member getMember(){
+        return member;
+    }
+
     /**
      * Member 객체의 권한을 저장하는 String 값에서
      * 권한들을 추출하여 리스트에 담는다.

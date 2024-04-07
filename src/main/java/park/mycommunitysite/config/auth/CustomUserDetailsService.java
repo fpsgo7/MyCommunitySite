@@ -17,13 +17,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     /**
      * 로그인 요청이 오면 실행된다.
-     * @param username the username identifying the user whose data is required.
+     * 유저이름으로 이메일을 사용하기에 이메일로 작성한다.
+     * @param email the email identifying the user whose data is required.
      * @return 커스텀 유저 디테일즈 객체
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<Member> members = memberRepository.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        List<Member> members = memberRepository.findByEmail(email);
 
         return new CustomUserDetails(members.get(0));
     }
