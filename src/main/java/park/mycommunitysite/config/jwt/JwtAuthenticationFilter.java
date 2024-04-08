@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
 
-    // /login 요청을 하면 로그인 시도를 위해서 실행되는 함수
+    // /login 요청을 하면 로그인 시도를 위해서 실행되는 메서드
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try{
@@ -39,12 +39,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             // 여기서는 json 데이터를 파싱하여 회원 객체를 생성한다.
             ObjectMapper objectMapper = new ObjectMapper();
-            // 멤버 객체를 암호화되지 않은 비밀번호로 만들어 인증에 사용할 수 없다.
             Member member = objectMapper.readValue(request.getInputStream(),Member.class);
-            // 그래서 위 멤버 객체를 토대로
-            System.out.println("JwtAuthenticationFilter :"+ member);
-            System.out.println("JwtAuthenticationFilter memberPassword:"+ member.getPassword());
-            // 2. 유저 객체를 통하여 토큰을 생성한다.
+
+            // 2. 그래서 위 멤버 객체를 토대로 유저 객체를 통하여 토큰을 생성한다.
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(member.getEmail(),member.getPassword());
 
@@ -53,11 +50,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // 성공하면 그결과로 Authentication 객체가 만들어지며 authentication에는 내가 로그인한 정보가 담긴다.
             Authentication authentication =
                     authenticationManager.authenticate(authenticationToken);
+
             // 4. 출력 확인용 로그인이 성공적이었다면 정보를 가져올 수 있다.
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            System.out.println("JwtAuthenticationFilter"+customUserDetails.getMember().getEmail());
+            System.out.println("JwtAuthenticationFilter  이메일값:"+customUserDetails.getMember().getEmail());
 
-            // 5. authentication 객체가 session 영역에 저장을 해야하고 그방법으로 return 해주면된다.
+            // 5. authentication 객체가 session 영역에 저장을 해야하고 return 해주면된다.
             // 리턴을 해주는 이유는 권환 관리를 security가 대신 하기 때문이다.
             // (세션 사용이유는 단지 권한 처리 때문이다.)
             return authentication;
@@ -77,11 +75,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         System.out.println("successfulAuthentication 실행됨 로그인 인증 성공");
 
-        // Hash 암호화 방식으로 암호화 시킨다.
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
         String jwtToken = JWT.create()
-                .withSubject("cosToken")
-                .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))//현제시간 + 기간 시간 30분
+                .withSubject(JwtProperties.tokenSubject)
+                .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
                 // withClaime 내가 원하는 값을 넣어 커스텀해도된다.
                 .withClaim("id",customUserDetails.getMember().getId())
                 .withClaim("email",customUserDetails.getMember().getEmail())
