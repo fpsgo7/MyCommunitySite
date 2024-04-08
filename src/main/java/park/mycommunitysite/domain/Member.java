@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity(name = "members")
+@Entity
+@Table(name = "members")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자 protected로 하여 함부로 객체생성을 못하게함
 public class Member {
@@ -32,7 +33,7 @@ public class Member {
         this.id = member.getId();
         this.email = member.getEmail();
         this.password = encryptedPassword;
-        this.roles = "USER";
+        this.roles = "USER,";
     }
 
     /*--핵심 비즈니스 로직--*/

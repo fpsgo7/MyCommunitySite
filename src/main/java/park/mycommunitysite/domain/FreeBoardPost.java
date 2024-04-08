@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity(name = "free_board_post")
+@Entity
+@Table(name = "free_board_post")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FreeBoardPost extends BaseTimeEntity{
