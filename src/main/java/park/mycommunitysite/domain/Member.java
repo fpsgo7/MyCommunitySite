@@ -33,7 +33,7 @@ public class Member {
         this.id = member.getId();
         this.email = member.getEmail();
         this.password = encryptedPassword;
-        this.roles = "USER,";
+        this.roles = "ROLE_USER,";// 기본규칙을 넣어준다.
     }
 
     /*--핵심 비즈니스 로직--*/
