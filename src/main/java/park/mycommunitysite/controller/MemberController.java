@@ -1,6 +1,7 @@
 package park.mycommunitysite.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,11 +33,21 @@ public class MemberController {
     }
 
     /**
+     * 스프링 시큐리티 테스트용
+     * 아무나 접근가능
+     */
+    @GetMapping("/all")
+    public String noneUser(){
+        System.out.println("MEmberController : 아무나 접근가능");
+        return "test";
+    }
+
+    /**
      * 스프링 시큐리티 태슽용
-     * user,manager 권한만 접근가능
+     * 인증된 대상만 접근가능
      * @return
      */
-    @GetMapping("/api/user")
+    @GetMapping("/user")
     public String user(Authentication authentication){
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         System.out.println("MemberController authentication : " + customUserDetails.getUsername());
@@ -47,7 +58,7 @@ public class MemberController {
      * manager 만 접근가능
      * @return
      */
-    @GetMapping("/api/manager")
+    @GetMapping("/manager")
     public String manager(){
         return "test";
     }
