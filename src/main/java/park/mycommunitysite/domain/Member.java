@@ -29,9 +29,8 @@ public class Member {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<FreeBoardComment> freeBoardComments;
 
-    public  Member(Member member,String encryptedPassword){
-        this.id = member.getId();
-        this.email = member.getEmail();
+    public  Member(String email,String encryptedPassword){
+        this.email = email;
         this.password = encryptedPassword;
         this.roles = "ROLE_USER,";// 기본규칙을 넣어준다.
     }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 가입</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+    <style>
+    .bodyBackground {
+      background-color: rgba(0, 0, 0, 0.1)
+    }
+    .card{
+      background-color: #f8f9fa;
+      border-radius: 1rem;
+    }
+    </style>
+
+</head>
+<body class="bodyBackground">
+<section class="d-flex vh-100">
+    <div class="container-fluid row justify-content-center align-content-center">
+        <div class="card">
+            <div class="card-body p-5 black-center">
+                <h2 class="black-white">회원가입</h2>
+                <p class="black-white-50 mt-2 mb-5">회원 가입하는 곳 입니다.</p>
+                <p class="black-white-50 mt-2 mb-5">글자길이는 3~25 까지 허용합니다.</p>
+                <div class = "mb-2">
+                    <form th:action="@{/join}" th:object="${joinForm}"  method="POST" >
+                        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+                        <div class="mb-3">
+                            <label class="form-label black-white">이메일</label>
+                            <input th:field="*{email}" type="email" class="form-control" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label black-white">비밀번호</label>
+                            <input th:field="*{password}" type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label black-white">비밀번호 확인</label>
+                            <input th:field="*{passwordCheck}" type="password" class="form-control" >
+                        </div>
+                        <a href="#"  onclick="joinPopup()" >회원가입 동의사항 </a>
+                        <!-- 회원가입 동의 체크박스 -->
+                        <input type="checkbox" id="joinCheckbox"></input>
+                        <button id="joinButton" type="submit" class="btn btn-primary" disabled>Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>
+  // 체크박스 요소 가져오기
+  const joinCheckbox = document.getElementById('joinCheckbox');
+
+  // 버튼 요소 가져오기
+  const joinButton = document.getElementById('joinButton');
+  // 버튼 활성화하기
+  joinCheckbox.addEventListener('change', function() {
+    if (joinCheckbox.checked) {
+        joinButton.disabled = false;
+    } else {
+        joinButton.disabled = true;
+    }
+  });
+  // 팝업창 띄우기
+  function joinPopup(){
+      var url = "/joinPopup";
+      var name = "joinPopup test";
+      var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+      window.open(url, name, option);
+  }
+
+</script>
+</html>
