@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import park.mycommunitysite.config.auth.CustomUserDetails;
@@ -30,6 +31,12 @@ public class MemberController {
 
         // System.out.println("MemberController : member :"+ newMember.getRoleList());
         return "test";
+    }
+
+    /* 로그인 */
+    @GetMapping("/login")
+    public String loginView(){
+        return "user/login";
     }
 
     /**
