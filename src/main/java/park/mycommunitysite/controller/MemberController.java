@@ -3,27 +3,21 @@ package park.mycommunitysite.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import park.mycommunitysite.config.auth.CustomUserDetails;
-import park.mycommunitysite.domain.Member;
 import park.mycommunitysite.form.JoinForm;
-import park.mycommunitysite.repository.MemberRepository;
+import park.mycommunitysite.service.MemberService;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     /* 회원가입 */
     @PostMapping("/join")
@@ -37,17 +31,16 @@ public class MemberController {
                     "2개의 비밀번호가 다릅니다. ");
             return "user/join";
         }
-        log.info("회원가입이 진행됩니다.");
-        Member newMember = new Member(joinForm.getEmail()
-                , bCryptPasswordEncoder.encode(joinForm.getPassword()));
-        // newMember이 가리키는 객체의 id값은 null 이지만
-        // save 메서드에 의하여 영속화 됨으로써 Member에 설정한 db 규칙이 적용되
-        // id 값이  알아서 입력된다.
-        // System.out.println(newMember.getId()); // 여기서 값을 추출하면 null 이다.
-        memberRepository.save(newMember);
 
-        // System.out.println("MemberController : member :"+ newMember.getRoleList());
-        return "user/login";
+        try{
+            memberService.findByEmail(joinForm.getEmail());
+            bindingResult.rejectValue("email", "sameEmail",
+                    "이미 존재한는 이메일입니다. ");
+            return "user/join";
+        }catch (Exception e){
+            memberService.joinMember(joinForm);
+            return "redirect:" + "/login";// 로그인 http 요청을 다시해라
+        }
     }
 
     @GetMapping("/join")
@@ -68,6 +61,7 @@ public class MemberController {
     public String loginView(){
         return "user/login";
     }
+    
 
     /**
      * 스프링 시큐리티 테스트용
