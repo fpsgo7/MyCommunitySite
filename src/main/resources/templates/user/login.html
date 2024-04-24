@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>로그인</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
     <style>
     .bodyBackground {
       background-color: rgba(0, 0, 0, 0.1)
@@ -13,7 +12,7 @@
       background-color: #f8f9fa;
       border-radius: 1rem;
     }
-  </style>
+    </style>
 </head>
 <body class="bodyBackground">
 <section class="d-flex vh-100">
@@ -23,17 +22,15 @@
                 <h2 class="text-black">ParkCommunitySite</h2>
                 <div class = "mb-2">
                     <!-- 일반 로그인 -->
-                    <form action="/login" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label text-black">Email</label>
-                            <input type="email" class="form-control" name="username">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-black">Password</label>
-                            <input type="password" class="form-control" name="password">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                    <div class="mb-3">
+                        <label class="form-label text-black">Email</label>
+                        <input type="email" class="form-control" id="username">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-black">Password</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <button type="button" id="login-btn" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary mt-3" onclick="location.href='/join'">회원가입</button>
                 </div>
             </div>
@@ -41,4 +38,6 @@
     </div>
 </section>
 </body>
+<script src="/js/httpRequest.js"></script>
+<script src="/js/login.js"></script>
 </html>
