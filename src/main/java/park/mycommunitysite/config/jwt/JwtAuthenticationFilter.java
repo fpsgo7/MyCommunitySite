@@ -63,8 +63,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        return null;// 로그인 실패
+        // 로그인 실패
+        // 응답 상태를 통해 로그인 정보가 잘못되었다며 클라이언트에게 알린다.
+        response.setStatus(401);
+        return null;
     }
 
     /**
@@ -85,5 +87,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC256(JwtProperties.SECRET));
         // 해더를 통해 클라이언트 쪽으로 JWT 토큰이 응답된다.
         response.addHeader(JwtProperties.HEADER_STRING,JwtProperties.TOKEN_PREFIX+jwtToken);
+
     }
+
+
 }
