@@ -34,17 +34,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         //super.doFilterInternal(request, response, chain); // 오버라이드 대상에서 이미 응답하는 문장이 있기에 비활성화 한다.
         String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
+        String jwtParameter = request.getParameter(JwtProperties.HEADER_STRING);
         System.out.println("JwtAuthorizationFilter : 헤더값 : "+jwtHeader);
 
-        // 해당 요청이 비정상적일 경우나 , 로그인 중이 아닐경우 발생한다.
-        // 해더로부터 JWT 토큰을 가져와 해당 JWT 토큰을 검증해서
-        // 정상적인 사용자인지 확인한다.
-        if(jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)){
-            chain.doFilter(request,response);
-            return;
-        }
+        if(jwtHeader != null && jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX))
+            jwtTokenCheck(jwtHeader);
+        else if(jwtParameter != null && jwtParameter.startsWith(JwtProperties.TOKEN_PREFIX))
+            jwtTokenCheck(jwtParameter);
+        chain.doFilter(request,response);
 
-        // JWT 토큰을 검증해서 정상적인 사용자인지 확인
+    }
+
+    // jwtToken 값을 확인하여 정상적인 사용자인지 확인한다.
+    private void jwtTokenCheck(String jwtHeader) {
         String token = jwtHeader.replace(JwtProperties.TOKEN_PREFIX,"");
         String email
                 = JWT.require(Algorithm.HMAC256(JwtProperties.SECRET)).build().verify(token).getClaim("email").asString();
@@ -61,6 +63,5 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println("JwtAuthorizationFilter : 서명이 완료되었습니다.");
         }
-        chain.doFilter(request,response);
     }
 }
